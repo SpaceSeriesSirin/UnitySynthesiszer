@@ -65,33 +65,6 @@ Based on the current `phase` (which is always between 0.0 and 1.0), we calculate
 | **Triangle** | Linear interpolation | Ramps up from -1 to 1, then down from 1 to -1. |
 | **Noise** | `Random.NextDouble()` | Ignores phase. Returns a random value for every sample. |
 
-## 📝 Code Snippet (Core Logic)
-
-```csharp
-void OnAudioFilterRead(float[] data, int channels)
-{
-    double increment = frequency / sampleRate;
-
-    for (int i = 0; i < data.Length; i += channels)
-    {
-        phase += increment;
-        if (phase > 1) phase -= 1;
-
-        float value = 0f;
-        
-        // Calculate Waveform based on Phase...
-        if (waveType == WaveType.Sine) 
-            value = (float)Math.Sin(phase * 2 * Math.PI);
-        
-        // Apply Gain
-        value *= gain;
-
-        // Write to all channels (L/R)
-        for (int c = 0; c < channels; c++)
-            data[i + c] = value;
-    }
-}
-
 ## ⚠️ Important Notes
 
 1.  **Thread Safety:**
